@@ -2,6 +2,11 @@
   publish = "dist"
   command = "npm run build"
 
+[build.environment]
+  VITE_EMAILJS_SERVICE_ID = "service_x4evj96"
+  VITE_EMAILJS_TEMPLATE_ID = "template_hcxijf8"
+  VITE_EMAILJS_PUBLIC_KEY = "DN1amGdxzT9bR0sFT"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
