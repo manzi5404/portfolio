@@ -26,7 +26,7 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+           <div className="flex items-center gap-3">
             <a
               href={contactInfo.github}
               target="_blank"
@@ -43,15 +43,17 @@ export default function Footer() {
             >
               <Mail size={18} />
             </a>
-            <a
-              href={contactInfo.linkedin || '#'}
-              target={contactInfo.linkedin ? '_blank' : undefined}
-              rel={contactInfo.linkedin ? 'noopener noreferrer' : undefined}
-              className="w-11 h-11 rounded-full border border-secondary/10 flex items-center justify-center text-muted hover:text-rose hover:border-rose/30 hover:bg-rose/5 transition-all duration-300"
-              aria-label="LinkedIn profile"
-            >
-              <Linkedin size={18} />
-            </a>
+            {contactInfo.linkedin && (
+              <a
+                href={contactInfo.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-11 h-11 rounded-full border border-secondary/10 flex items-center justify-center text-muted hover:text-rose hover:border-rose/30 hover:bg-rose/5 transition-all duration-300"
+                aria-label="LinkedIn profile"
+              >
+                <Linkedin size={18} />
+              </a>
+            )}
           </div>
 
           <div className="flex flex-col items-center md:items-end gap-3">

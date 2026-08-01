@@ -1,27 +1,61 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Mail, Github, Linkedin, Copy, Check, ArrowUpRight, Send } from 'lucide-react'
+import * as emailjs from '@emailjs/browser'
 import { contactInfo } from '../data/portfolio'
 import Reveal from '../components/Reveal'
 import TextReveal from '../components/TextReveal'
 import MagneticButton from '../components/MagneticButton'
+
+const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
+const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
   const [copied, setCopied] = useState(false)
   const [focused, setFocused] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    const mailtoLink = `mailto:${contactInfo.email}?subject=Portfolio Contact from ${formData.name}&body=${formData.message}`
-    window.location.href = mailtoLink
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 3000)
+    if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
+      // Fallback: open mailto if EmailJS is not configured
+      const mailtoLink = `mailto:${contactInfo.email}?subject=Portfolio Contact from ${encodeURIComponent(formData.name)}&body=${encodeURIComponent(formData.message)}`
+      window.location.href = mailtoLink
+      setSubmitted(true)
+      setTimeout(() => setSubmitted(false), 3000)
+      return
+    }
+    setLoading(true)
+    setError(false)
+    try {
+      await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        {
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          to_email: contactInfo.email,
+        },
+        { publicKey: PUBLIC_KEY }
+      )
+      setSubmitted(true)
+      setFormData({ name: '', email: '', message: '' })
+      setTimeout(() => setSubmitted(false), 5000)
+    } catch (err) {
+      setError(true)
+      setTimeout(() => setError(false), 5000)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const copyEmail = () => {
@@ -44,7 +78,7 @@ export default function Contact() {
   if (contactInfo.linkedin) {
     links.push({
       label: 'LinkedIn',
-      value: contactInfo.linkedin,
+      value: 'linkedin.com/in/manzi-lucky-a61337341',
       href: contactInfo.linkedin,
       icon: Linkedin,
     })
@@ -182,27 +216,48 @@ export default function Contact() {
                   className={`${inputClass('message')} resize-none`}
                 />
               </div>
-              <MagneticButton className="w-full">
-                <button
-                  type="submit"
-                  className="w-full btn-primary justify-center group"
-                >
-                  <span>Send Message</span>
-                  <Send size={16} className="relative z-10 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </button>
-              </MagneticButton>
-              <AnimatePresence>
-                {submitted && (
-                  <motion.p
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    className="text-center text-sm text-muted"
-                  >
-                    Opening your email client...
-                  </motion.p>
-                )}
-              </AnimatePresence>
+               <MagneticButton className="w-full">
+                 <button
+                   type="submit"
+                   disabled={loading}
+                   className="w-full btn-primary justify-center group"
+                 >
+                   <span>{loading ? 'Sending...' : 'Send Message'}</span>
+                   <Send size={16} className="relative z-10 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                 </button>
+               </MagneticButton>
+               <AnimatePresence>
+                 {submitted && (
+                   <motion.p
+                     initial={{ opacity: 0, y: 10 }}
+                     animate={{ opacity: 1, y: 0 }}
+                     exit={{ opacity: 0 }}
+                     className="text-center text-sm text-secondary/70"
+                   >
+                     Message sent! I'll get back to you soon.
+                   </motion.p>
+                 )}
+                 {error && (
+                   <motion.p
+                     initial={{ opacity: 0, y: 10 }}
+                     animate={{ opacity: 1, y: 0 }}
+                     exit={{ opacity: 0 }}
+                     className="text-center text-sm text-rose"
+                   >
+                     Something went wrong. Please try again or email me directly.
+                   </motion.p>
+                 )}
+                 {loading && (
+                   <motion.p
+                     initial={{ opacity: 0, y: 10 }}
+                     animate={{ opacity: 1, y: 0 }}
+                     exit={{ opacity: 0 }}
+                     className="text-center text-sm text-muted"
+                   >
+                     Sending your message...
+                   </motion.p>
+                 )}
+               </AnimatePresence>
             </form>
           </Reveal>
         </div>

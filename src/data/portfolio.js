@@ -18,7 +18,7 @@ const title = 'Software Developer'
 const location = 'Rwanda'
 const email = 'manziluckyyy@gmail.com'
 const github = 'https://github.com/manzi5404'
-const linkedin = ''
+const linkedin = 'https://www.linkedin.com/in/manzi-lucky-a61337341/'
 const languages = ['Kinyarwanda', 'English']
 
 const summary =
