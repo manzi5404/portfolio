@@ -1,11 +1,7 @@
 name = "manzi-lucky-portfolio"
-account_id = ""
+account_id = "2a3e459bdc69dba4ae854945bdcd5e1c"
 workers_dev = true
 compatibility_date = "2024-01-01"
 
 main = "src/worker.js"
 assets = { directory = "./dist", binding = "ASSETS", run_on = "list" }
-
-[[routes]]
-pattern = "manzi-lucky.dev/*"
-zone_id = ""
