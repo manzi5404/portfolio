@@ -1,0 +1,17 @@
+name = "manzi-lucky-portfolio"
+account_id = ""
+workers_dev = true
+compatibility_date = "2024-01-01"
+
+[site]
+bucket = "./dist"
+entry_point = "./dist"
+
+[[routes]]
+pattern = "manzi-lucky.dev/*"
+zone_id = ""
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200

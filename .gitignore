@@ -1,0 +1,11 @@
+node_modules
+dist
+.env
+.env.local
+*.log
+.DS_Store
+My image.jpeg
+"My image.jpeg"
+Phase 1.docx
+Phase1_text.txt
+package.json.bak
