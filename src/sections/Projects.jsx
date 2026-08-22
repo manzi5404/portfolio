@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ExternalLink, Github, ArrowUpRight, ArrowDownRight } from 'lucide-react'
+import { ExternalLink, Github, ArrowUpRight, ArrowDownRight, Monitor } from 'lucide-react'
 import { projects } from '../data/portfolio'
 import Reveal from '../components/Reveal'
 import TextReveal from '../components/TextReveal'
@@ -78,40 +78,117 @@ export default function Projects() {
               className="flex flex-col"
             >
               <TiltCard maxTilt={4} className="card overflow-hidden flex-1">
-                <div className="relative aspect-[16/9] bg-gradient-to-br from-surface to-primary overflow-hidden">
-                  {/* Decorative monogram */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="font-display text-[7rem] font-bold text-white/[0.04]">
-                      {featuredProject.name.charAt(0)}
-                    </span>
+                {featuredProject.liveUrl ? (
+                  <a
+                    href={featuredProject.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block relative aspect-[16/9] bg-gradient-to-br from-surface to-primary overflow-hidden group"
+                  >
+                    {/* Browser mockup chrome */}
+                    <div className="absolute inset-x-0 top-0 h-8 bg-white/[0.04] border-b border-white/[0.08] flex items-center px-3 gap-1.5 z-20">
+                      <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                      <div className="ml-3 flex-1 max-w-xl">
+                        <div className="h-5 rounded-md bg-white/[0.04] border border-white/[0.08] flex items-center px-2.5">
+                          <span className="text-[10px] font-mono text-muted/60 truncate">{featuredProject.liveUrl}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Site preview area */}
+                    <div className="absolute inset-0 flex items-center justify-center pt-8">
+                      <div className="text-center">
+                        <span className="font-display text-6xl font-bold text-white/[0.06] group-hover:text-white/[0.1] transition-colors duration-500">
+                          {featuredProject.name.charAt(0)}
+                        </span>
+                        <p className="text-xs text-muted/40 font-mono mt-2 tracking-wider">
+                          {featuredProject.liveUrl.replace(/^https?:\/\//, '').split('/')[0]}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Grid pattern */}
+                    <div
+                      className="absolute inset-0 opacity-[0.03]"
+                      style={{
+                        backgroundImage:
+                          'linear-gradient(#faf7f3 1px, transparent 1px), linear-gradient(90deg, #faf7f3 1px, transparent 1px)',
+                        backgroundSize: '40px 40px',
+                      }}
+                    />
+
+                    {/* Hover overlay */}
+                    <div className="absolute inset-0 bg-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
+
+                    {/* Status + Live badge */}
+                    <div className="absolute top-10 left-5 flex gap-2 z-20">
+                      <span
+                        className={`px-3 py-1 text-[11px] font-mono uppercase tracking-wider rounded-full backdrop-blur-md ${
+                          featuredProject.status === 'completed'
+                            ? 'bg-white/10 text-white/80 border border-white/15'
+                            : 'bg-white/5 text-muted border border-white/10'
+                        }`}
+                      >
+                        {featuredProject.status === 'completed' ? 'Completed' : 'In Progress'}
+                      </span>
+                      <span className="px-3 py-1 text-[11px] font-mono uppercase tracking-wider rounded-full bg-rose/20 text-rose border border-rose/30 backdrop-blur-md flex items-center gap-1.5">
+                        <Monitor size={12} />
+                        Live
+                      </span>
+                    </div>
+
+                    {/* Category / role */}
+                    <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between z-20">
+                      <span className="text-xs text-muted font-mono uppercase tracking-wider">
+                        {featuredProject.category}
+                      </span>
+                      <span className="text-xs text-muted font-mono">{featuredProject.role}</span>
+                    </div>
+
+                    {/* Click prompt */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+                      <span className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-mono text-white flex items-center gap-2">
+                        <ExternalLink size={14} />
+                        Visit Site
+                      </span>
+                    </div>
+                  </a>
+                ) : (
+                  <div className="relative aspect-[16/9] bg-gradient-to-br from-surface to-primary overflow-hidden">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="font-display text-[7rem] font-bold text-white/[0.04]">
+                        {featuredProject.name.charAt(0)}
+                      </span>
+                    </div>
+                    <div
+                      className="absolute inset-0 opacity-[0.03]"
+                      style={{
+                        backgroundImage:
+                          'linear-gradient(#faf7f3 1px, transparent 1px), linear-gradient(90deg, #faf7f3 1px, transparent 1px)',
+                        backgroundSize: '40px 40px',
+                      }}
+                    />
+                    <div className="absolute top-5 left-5 flex gap-2">
+                      <span
+                        className={`px-3 py-1 text-[11px] font-mono uppercase tracking-wider rounded-full backdrop-blur-md ${
+                          featuredProject.status === 'completed'
+                            ? 'bg-white/10 text-white/80 border border-white/15'
+                            : 'bg-white/5 text-muted border border-white/10'
+                        }`}
+                      >
+                        {featuredProject.status === 'completed' ? 'Completed' : 'In Progress'}
+                      </span>
+                    </div>
+                    <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
+                      <span className="text-xs text-muted font-mono uppercase tracking-wider">
+                        {featuredProject.category}
+                      </span>
+                      <span className="text-xs text-muted font-mono">{featuredProject.role}</span>
+                    </div>
                   </div>
-                  {/* Grid pattern */}
-                  <div
-                    className="absolute inset-0 opacity-[0.03]"
-                    style={{
-                      backgroundImage:
-                        'linear-gradient(#faf7f3 1px, transparent 1px), linear-gradient(90deg, #faf7f3 1px, transparent 1px)',
-                      backgroundSize: '40px 40px',
-                    }}
-                  />
-                  <div className="absolute top-5 left-5 flex gap-2">
-                    <span
-                      className={`px-3 py-1 text-[11px] font-mono uppercase tracking-wider rounded-full backdrop-blur-md ${
-                        featuredProject.status === 'completed'
-                          ? 'bg-white/10 text-white/80 border border-white/15'
-                          : 'bg-white/5 text-muted border border-white/10'
-                      }`}
-                    >
-                      {featuredProject.status === 'completed' ? 'Completed' : 'In Progress'}
-                    </span>
-                  </div>
-                  <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
-                    <span className="text-xs text-muted font-mono uppercase tracking-wider">
-                      {featuredProject.category}
-                    </span>
-                    <span className="text-xs text-muted font-mono">{featuredProject.role}</span>
-                  </div>
-                </div>
+                )}
               </TiltCard>
 
               <div className="mt-8 flex-1">
@@ -183,19 +260,6 @@ export default function Projects() {
                 </div>
 
                 <div className="flex flex-wrap gap-4">
-                  {featuredProject.liveUrl && (
-                    <MagneticButton>
-                      <a
-                        href={featuredProject.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-primary text-sm"
-                      >
-                        <span>Live Demo</span>
-                        <ExternalLink size={15} className="relative z-10" />
-                      </a>
-                    </MagneticButton>
-                  )}
                   {featuredProject.repoUrl && (
                     <MagneticButton strength={0.2}>
                       <a
@@ -225,7 +289,7 @@ export default function Projects() {
                   }}
                   className={`w-full text-left group relative overflow-hidden rounded-2xl border p-6 transition-all duration-500 ${
                     index === currentIndex
-                      ? 'border-white/20 bg-surface'
+                      ? 'border-white/20 bg-surface shadow-glow'
                       : 'border-white/[0.06] bg-primary hover:border-white/15 hover:bg-surface/60'
                   }`}
                 >
@@ -253,6 +317,12 @@ export default function Projects() {
                       </span>
                     ))}
                   </div>
+                  {project.liveUrl && (
+                    <div className="mt-3 flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-rose/80">
+                      <Monitor size={12} />
+                      <span>Live Demo Available</span>
+                    </div>
+                  )}
                   <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <ArrowUpRight size={18} className="text-white/60" />
                   </div>

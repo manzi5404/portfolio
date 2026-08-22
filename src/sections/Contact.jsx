@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Mail, Github, Linkedin, Copy, Check, ArrowUpRight, Send } from 'lucide-react'
+import { Mail, Github, Linkedin, Copy, Check, ArrowUpRight, Send, Phone, Download } from 'lucide-react'
 import * as emailjs from '@emailjs/browser'
-import { contactInfo } from '../data/portfolio'
+import { contactInfo, cvUrl } from '../data/portfolio'
 import Reveal from '../components/Reveal'
 import TextReveal from '../components/TextReveal'
 import MagneticButton from '../components/MagneticButton'
@@ -83,6 +83,14 @@ export default function Contact() {
       icon: Linkedin,
     })
   }
+  if (contactInfo.phone) {
+    links.push({
+      label: 'Phone',
+      value: contactInfo.phone,
+      href: `tel:${contactInfo.phone.replace(/\s/g, '')}`,
+      icon: Phone,
+    })
+  }
 
   return (
     <section id="contact" className="relative py-28 px-6 overflow-hidden">
@@ -123,10 +131,10 @@ export default function Contact() {
             <div className="space-y-2">
               {links.map((link, i) => (
                 <Reveal key={link.label} delay={i * 0.08}>
-                  <a
+                   <a
                     href={link.href}
-                    target={link.label === 'Email' ? undefined : '_blank'}
-                    rel={link.label === 'Email' ? undefined : 'noopener noreferrer'}
+                    target={link.label === 'Email' || link.label === 'Phone' ? undefined : '_blank'}
+                    rel={link.label === 'Email' || link.label === 'Phone' ? undefined : 'noopener noreferrer'}
                     className="group flex items-center justify-between p-5 rounded-xl border border-transparent hover:border-white/[0.08] hover:bg-white/[0.03] transition-all duration-300"
                   >
                     <div className="flex items-center gap-4">
@@ -150,18 +158,15 @@ export default function Contact() {
                 </Reveal>
               ))}
 
-              <Reveal delay={0.3}>
-                <button
-                  onClick={copyEmail}
+              <Reveal delay={0.35}>
+                <a
+                  href={cvUrl}
+                  download
                   className="group flex items-center gap-3 px-5 py-3 text-sm text-muted border border-white/10 rounded-full hover:border-white/30 hover:text-white transition-all duration-300"
                 >
-                  {copied ? (
-                    <Check size={16} className="text-white" />
-                  ) : (
-                    <Copy size={16} className="group-hover:scale-110 transition-transform" />
-                  )}
-                  {copied ? 'Copied to clipboard!' : 'Copy email'}
-                </button>
+                  <Download size={16} className="group-hover:scale-110 transition-transform" />
+                  Download CV
+                </a>
               </Reveal>
             </div>
           </div>

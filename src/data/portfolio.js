@@ -19,6 +19,8 @@ const location = 'Rwanda'
 const email = 'manziluckyyy@gmail.com'
 const github = 'https://github.com/manzi5404'
 const linkedin = 'https://www.linkedin.com/in/manzi-lucky-a61337341/'
+const phone = '+250 789 897 235'
+const cvUrl = '/ManziCV.pdf'
 const languages = ['Kinyarwanda', 'English']
 
 const summary =
@@ -53,13 +55,19 @@ const skills = {
 
 const experience = [
   {
-    role: 'Independent Software Developer',
-    company: 'Self-Employed',
-    period: '2025 – Present',
+    role: 'Software Developer (Intern)',
+    company: 'M&S INNOVATION LAB, Kigali',
+    period: '2 MONTH',
     description: [
-      'Design and build full-stack web applications independently, from concept through deployment.',
-      'Work across the stack, covering front-end interfaces, back-end services, and database design.',
-      'Deliver production-ready products with clean code and modern best practices.',
+      'Applied technical skills and gained real-world industry experience in software development within a professional technology lab environment.',
+    ],
+  },
+  {
+    role: 'Software Developer & Designer (Intern)',
+    company: 'SANTECH, Kigali',
+    period: '1 MONTH',
+    description: [
+      'Demonstrated strong problem-solving capacity and innovation by designing and building scalable software solutions and practical applications targeting real-world challenges.',
     ],
   },
 ]
@@ -223,6 +231,7 @@ const contactInfo = {
   email: email,
   github: github,
   linkedin: linkedin,
+  phone: phone,
 }
 
 export {
@@ -232,6 +241,8 @@ export {
   email,
   github,
   linkedin,
+  phone,
+  cvUrl,
   languages,
   summary,
   skills,
