@@ -5,6 +5,52 @@ import { certificates } from '../data/portfolio'
 import Reveal from '../components/Reveal'
 import TextReveal from '../components/TextReveal'
 import TiltCard from '../components/TiltCard'
+import { scrollToTarget } from '../hooks/useLenis'
+
+const extraCertificates = [
+  {
+    id: 'cert-santech',
+    title: 'SANTECH Internship Certificate',
+    organization: 'SANTECH, Kigali',
+    date: '2024',
+    type: 'placeholder',
+  },
+  {
+    id: 'cert-ms-innovation-lab',
+    title: 'M&S Innovation Lab Internship Certificate',
+    organization: 'M&S INNOVATION LAB, Kigali',
+    date: '2024',
+    type: 'placeholder',
+  },
+  {
+    id: 'cert-golden-sachs',
+    title: 'Mentorship Certificate',
+    organization: 'Golden Sachs',
+    date: '',
+    type: 'placeholder',
+  },
+  {
+    id: 'cert-maniriho-placide',
+    title: 'Mentorship Certificate',
+    organization: 'Maniriho Placide',
+    date: '',
+    type: 'placeholder',
+  },
+]
+
+function slugify(text) {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+}
+
+function getCertId(cert) {
+  if (cert.id && typeof cert.id === 'string') return cert.id
+  return `cert-${slugify(cert.title)}`
+}
+
+const allCertificates = [...certificates, ...extraCertificates]
 
 function CertificateModal({ cert, onClose }) {
   const [zoom, setZoom] = useState(1)
@@ -166,6 +212,16 @@ function CertificateModal({ cert, onClose }) {
 export default function Certificates() {
   const [selectedCert, setSelectedCert] = useState(null)
 
+  useEffect(() => {
+    const hash = window.location.hash
+    if (hash) {
+      const el = document.querySelector(hash)
+      if (el) {
+        setTimeout(() => scrollToTarget(hash), 100)
+      }
+    }
+  }, [])
+
   return (
     <section id="certificates" className="relative py-28 px-6 overflow-hidden">
       {/* Ghost text */}
@@ -200,18 +256,19 @@ export default function Certificates() {
           </div>
           <Reveal delay={0.2}>
             <span className="font-mono text-sm text-muted border border-white/10 rounded-full px-4 py-2">
-              {String(certificates.length).padStart(2, '0')} certificates
+              {String(allCertificates.length).padStart(2, '0')} certificates
             </span>
           </Reveal>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {certificates.map((cert, index) => (
-            <Reveal key={cert.id} delay={(index % 3) * 0.08}>
+          {allCertificates.map((cert, index) => (
+            <Reveal key={getCertId(cert)} delay={(index % 3) * 0.08}>
               <TiltCard
                 maxTilt={5}
                 onClick={() => setSelectedCert(cert)}
                 className="group cursor-pointer h-full"
+                id={getCertId(cert)}
               >
                 <div className="card p-0 h-full overflow-hidden group-hover:border-white/20 transition-colors duration-500">
                   <div className="relative aspect-[4/3] overflow-hidden bg-surface">
